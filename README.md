@@ -16,6 +16,8 @@ Channel: [@BotSorati](https://t.me/BotSorati) on Telegram
 - **Session management**: Saves Telegram session data for easy future logins.
 - **Proxy support**: Configure SOCKS5 proxy for connections.
 
+![telegram-login-manager-screenshot](https://github.com/user-attachments/assets/31af34ca-5484-4cb6-869d-f821c01bbfe1)
+
 ## Installation
 
 To install and use the Telegram Login Manager, follow these steps:
