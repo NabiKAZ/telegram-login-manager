@@ -2,7 +2,7 @@
 
 Telegram Login Manager is a command-line tool designed to manage Telegram login sessions. It allows you to add, list, and delete Telegram accounts, and stores the session data in a file for future use. This tool supports proxy configurations and error handling.
 
-After adding accounts, you can move the session JSON file to another machine or share it with others. The session file contains the login session information, allowing you to use the same accounts without needing to log in again.
+After adding accounts, you can move the session JSON file to another machine or share it with others. The session file contains the login session information, allowing you to use the same accounts without needing to log in again. You can use it with libraries like [gramjs](https://github.com/gram-js/gramjs) (Node.js), [Telethon](https://github.com/LonamiWebs/Telethon) (Python), and others.
 
 Developed by: [@NabiKAZ](https://twitter.com/NabiKAZ) on Twitter
 
