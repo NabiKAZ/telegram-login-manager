@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "cli-table3": "^0.6.5",
+    "dirname-filename-esm": "^1.1.2",
+    "fs": "^0.0.1-security",
+    "input": "^1.0.1",
+    "path": "^0.12.7",
+    "telegram": "^2.26.16",
+    "yargs": "^17.7.2"
+  }
+}
