@@ -18,7 +18,7 @@
  */
 
 import * as config from "./config.mjs";
-import { TelegramClient } from "telegram";
+import { TelegramClient, Api } from "telegram";
 import { StringSession } from "telegram/sessions/index.js";
 import chalk from 'chalk';
 import yargs from 'yargs';
@@ -215,6 +215,13 @@ async function listAccounts() {
             client.setLogLevel('ERROR');
 
             await client.start();
+
+            // Change status to online
+            await client.invoke(
+                new Api.account.UpdateStatus({
+                    offline: false,
+                })
+            );
 
             const user = await client.getMe();
 
