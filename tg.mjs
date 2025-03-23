@@ -63,7 +63,20 @@ yargs(process.argv.slice(2))
             await deleteAccount(argv.id); // Calls the function to delete an account
         },
     })
-    .demandCommand(1, 'You must specify a command (add, list, del).') // Require at least one command
+    .command({
+        command: 'messages <id>',
+        describe: 'Get last 3 messages',
+        builder: (yargs) => {
+            return yargs.positional('id', {
+                describe: 'ID of the account',
+                type: 'string',
+            });
+        },
+        async handler(argv) {
+            await lastMessages(argv.id); // Calls the function to get last messages
+        },
+    })
+    .demandCommand(1, 'You must specify a command (add, list, del, messages).') // Require at least one command
     .strict() // Only predefined commands are allowed
     .fail((msg, err, yargs) => {
         if (err) throw err; // Handle internal errors from yargs
@@ -214,6 +227,7 @@ async function listAccounts() {
             // Set logging level
             client.setLogLevel('ERROR');
 
+            // Connect to the Telegram client
             await client.start();
 
             // Change status to online
@@ -274,6 +288,77 @@ async function deleteAccount(userId) {
             // If account not found
             console.log(chalk.yellowBright(`Account with ID "${userId}" not found.`));
         }
+    } catch (error) {
+        console.log(chalk.redBright(`Error: ${error.message}`));
+    }
+}
+
+async function lastMessages(userId) {
+    try {
+        const accounts = getAccounts();
+        const account = accounts.find(account => account.id.toString() === userId.toString());
+
+        // If account not found
+        if (!account) {
+            console.log(chalk.yellowBright(`Account with ID "${userId}" not found.`));
+        }
+
+        // Telegram client configuration for each account
+        const stringSession = new StringSession(account.session);
+        const client = new TelegramClient(stringSession, config.apiId, config.apiHash, {
+            connectionRetries: 5,
+            proxy: getProxy()
+        });
+
+        // Set logging level
+        client.setLogLevel('ERROR');
+
+        // Connect to the Telegram client
+        await client.start();
+
+        // Get more dialogs to ensure we have enough after sorting
+        const dialogs = await client.getDialogs({
+            limit: 50
+        });
+
+        // Filter only private chats
+        const privateChats = dialogs.filter(dialog => dialog.isUser);
+
+        if (privateChats.length === 0) {
+            console.log('No private chats found.');
+            await client.disconnect();
+            return;
+        }
+
+        // Sort dialogs by the date of the last message (newest first)
+        privateChats.sort((a, b) => {
+            const dateA = a.message ? a.message.date : 0;
+            const dateB = b.message ? b.message.date : 0;
+            return dateB - dateA;  // Descending order (newest first)
+        });
+
+        // Select the chat with the most recent message
+        const mostRecentChat = privateChats[0];
+
+        // Get messages
+        const messages = await client.getMessages(mostRecentChat.inputEntity, {
+            limit: 3
+        });
+
+        // Display messages
+        console.log('\n=== Last 3 Messages ===');
+        messages.reverse().forEach((message, i) => {
+            const date = chalk.gray(new Date(message.date * 1000).toLocaleString());
+            const sender = message.out ? chalk.cyan('You') : chalk.green(mostRecentChat.title);
+            const messageContent = message.message || (message.media ? chalk.yellow('[Media content]') : chalk.red('[Empty message]'));
+
+            console.log(`${i + 1}. [${date}] ${sender}: ${messageContent}`);
+            console.log(chalk.gray('━'.repeat(50)));
+        });
+
+        // Disconnect
+        await client.disconnect();
+
     } catch (error) {
         console.log(chalk.redBright(`Error: ${error.message}`));
     }

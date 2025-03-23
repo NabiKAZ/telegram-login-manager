@@ -13,10 +13,13 @@ Channel: [@BotSorati](https://t.me/BotSorati) on Telegram
 - **List all accounts**: View a list of all Telegram accounts with their details.
 - **Add a new account**: Add a new Telegram account by logging in with your phone number.
 - **Delete an account**: Remove an account from the session file by ID.
+- **Get last messages**: Get the last 3 messages from the most recent private chat.
 - **Session management**: Saves Telegram session data for easy future logins.
 - **Proxy support**: Configure SOCKS5 proxy for connections.
 
-![telegram-login-manager-screenshot](https://github.com/user-attachments/assets/31af34ca-5484-4cb6-869d-f821c01bbfe1)
+![telegram-login-manager-screenshot-list-accounts](https://github.com/user-attachments/assets/31af34ca-5484-4cb6-869d-f821c01bbfe1)
+
+![telegram-login-manager-screenshot-last-messages](https://github.com/user-attachments/assets/c0a65c60-ba50-43bb-9a11-4d7d3cfe8676)
 
 ## Installation
 
