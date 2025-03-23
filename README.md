@@ -98,6 +98,16 @@ node tg.mjs del <id>
 
 Replace `<id>` with the ID of the account you want to delete.
 
+### 4. Get Last Messages
+
+To get the last 3 messages from the most recent private chat:
+
+```bash
+node tg.mjs messages <id>
+```
+
+Replace `<id>` with the ID of the account you want to retrieve messages for. This command will display the last 3 messages from the most recent private chat of the specified account.
+
 ## License
 
 This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
